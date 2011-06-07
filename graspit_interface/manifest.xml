@@ -1,0 +1,23 @@
+<package>
+  <description brief="graspit_interface">
+
+     graspit_interface
+
+  </description>
+  <author>Matei Ciocarlie</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/graspit_interface</url>
+  <depend package="roscpp"/>
+  <depend package="geometry_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="object_manipulation_msgs"/>
+  <depend package="graspit"/>
+  <depend package="graspit_interface_msgs"/>
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lros_graspit_interface"/>
+  </export>
+
+</package>
+
+

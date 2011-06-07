@@ -1,0 +1,8 @@
+libqt4-dev:
+  ubuntu: libqt4-dev
+libqt4-opengl-dev:
+  ubuntu: libqt4-opengl-dev
+libqt4-sql-psql:
+  ubuntu: libqt4-sql-psql
+libcoin40-dev:
+  ubuntu: libcoin40-dev

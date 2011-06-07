@@ -1,0 +1,16 @@
+<package>
+  <description brief="graspit_interface_msgs">
+
+     graspit_interface_msgs
+
+  </description>
+  <author>Peter Brook</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/graspit_interface_msgs</url>
+  <depend package="sensor_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="object_manipulation_msgs"/>
+</package>
+
+

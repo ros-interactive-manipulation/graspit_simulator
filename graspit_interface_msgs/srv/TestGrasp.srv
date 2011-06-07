@@ -1,0 +1,40 @@
+# Asks GraspIt! to test a grasp with the PR2 gripper
+# for now, the grasp is tested against the first graspable object
+# in GraspIt's world. 
+
+# the grasp to be tested
+object_manipulation_msgs/Grasp grasp
+
+# how the test should be performed
+# test the requested pose with no change
+int32 DIRECT = 0
+# do a complaint close before testing
+int32 COMPLIANT_CLOSE = 1
+# run a full reactive grasp, starting from the pre-grasp
+int32 REACTIVE_GRASP = 2
+# run a series of reactive grasp tests, perturbing over a region
+int32 ROBUST_REACTIVE_GRASP = 3
+int32 test_type
+
+---
+
+# whether the test was performed at all, or encountered a problem
+int32 TEST_WAS_PERFORMED = 0
+int32 TEST_WAS_NOT_PERFORMED = 1
+int32 test_performed
+
+# discrete qaulitative info about the result of the grasp
+int32 HAND_COLLISION = 0
+int32 GRASP_FAILURE = 1
+int32 GRASP_SUCCESS = 2
+int32 test_result
+
+# more info about the collisions, if any
+bool hand_object_collision
+bool hand_environment_collision
+
+# GraspIt's "energy" value associated with this grasp
+# we might remove this in the future
+float32 energy_value
+
+float32[] energy_value_list

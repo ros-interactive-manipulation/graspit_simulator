@@ -1,0 +1,13 @@
+# Instructs GraspIt to load an obstacle into the world
+
+# the obstacle file name, relative to GraspIt's root directory
+# as pointed to by the GRASPIT environment variable
+string file_name
+
+# the pose for the obstacle in the GraspIt! world
+geometry_msgs/Pose obstacle_pose
+---
+
+int32 LOAD_SUCCESS = 0
+int32 LOAD_FAILURE = 1
+int32 result

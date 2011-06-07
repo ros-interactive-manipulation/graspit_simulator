@@ -1,0 +1,8 @@
+# Instructs GraspIt to clear certain bodies from the world
+
+int32 ALL_BODIES = 0
+int32 GRASPABLE_BODIES = 1
+int32 OBSTACLES = 2
+int32 which_bodies
+
+---

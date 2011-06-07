@@ -1,0 +1,27 @@
+# This service can be used to check whether a grasp collides with environment and object
+# only one object and one tabletop right below it will be considered
+
+int32 scaled_model_id
+
+geometry_msgs/Pose grasp_pose
+
+float64 grasp_joint_angle
+
+string table_file_name
+
+---
+
+bool hand_environment_collision
+
+bool hand_object_collision
+
+float64 gripper_tabletop_clearance
+
+float64 gripper_object_distance
+
+
+int32 LOAD_OBJECT_FAILURE = 0
+int32 LOAD_OBSTACLE_FAILURE = 1
+int32 LOAD_GRIPPER_FAILURE = 2
+int32 CHECK_SUCCESS = 3
+int32 result

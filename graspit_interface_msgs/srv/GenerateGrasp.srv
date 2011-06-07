@@ -1,0 +1,51 @@
+# Instructs GraspIt to load a database model and place it at the origin of the world and then generate a grasp pose
+# Fingertip collision with the object is allowed and it will be taken as bad grasp. 
+# If no collision exist, grasp energy function will be calculated, if the value is higher than the high threshold, then it will be rejected
+# if the value is lower than the low threshold, it will also be rejected
+
+# The current version only allows a single instance of any database object in the graspit world;
+# if the object is already in the world, it will be moved to the origin
+# Other objects in the world will be cleared
+
+# the id of the model to be loaded
+int32 model_id
+
+# low threshold for the graps energy, energy lower than this value won't be returned
+float32 energy_low_threshold
+
+# high threshold for the grasp energy, energy higher than this value will be rejected
+float32 energy_high_threshold
+
+# if true, then fingertip collision is not allowed for the bad grasp, if false,only fingertip collision grasp will be returned
+bool reject_fingertip_collision 
+
+# if true, then any grasp that collides with the tabltop won't be accepted
+bool request_tabletop
+
+# the tabletop file name
+string tabletop_file_name
+---
+
+# if anything failed in the process, result will be failure, and all other values in the response will be invalid
+int32 GENERATE_SUCCESS = 0
+int32 GENERATE_FAILURE = 1
+int32 result
+
+# if hand_object is in collsion, the grasp_energy will be invalid
+bool hand_object_collision
+
+# returns a grasp pose based on the request
+geometry_msgs/Pose grasp_pose
+
+# returns the joint angle of the grasp
+float32 grasp_joint_angle
+
+# the calculated grasp_energy, when in collision, the data will be invalid
+float32 grasp_energy
+
+# the clearance between the gripper and the tabletop
+float64 gripper_tabletop_clearance
+
+# the distance between the gripper and the object
+float64 gripper_object_distance
+

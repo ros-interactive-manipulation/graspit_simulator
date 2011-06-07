@@ -1,0 +1,18 @@
+# Gets back a simulated scan of the scene. The scan is also broadcast on 
+# a different topic.
+
+# For now, the scan comes back in its own coordinate frame which is not
+# broadcast to tf
+
+# the pose of the scanned in the GraspIt world. The axes conventions for the
+# narrow stereo camera are followed (z points along the optical axis, y points "down")
+geometry_msgs/Pose scanner_pose
+
+bool request_ray_directions  # if set true, the directions of all the rays that doesn't hit anything during the scan will be returned in missing_ray_directions
+
+---
+
+# the simulated scan
+sensor_msgs/PointCloud2 scan
+
+geometry_msgs/Point32[] missing_ray_directions

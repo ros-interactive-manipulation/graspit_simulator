@@ -1,0 +1,19 @@
+<package>
+  <description brief="graspit_dbase_tasks">
+
+     Framework for batch processing using GraspIt and tasks stored in a database.
+
+  </description>
+  <author>Matei Ciocarlie</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/graspit_dbase_tasks</url>
+  <depend package="graspit"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lgraspit_dbase_tasks"/>
+  </export>
+
+</package>
+
+
