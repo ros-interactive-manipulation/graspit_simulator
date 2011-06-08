@@ -1,3 +1,7 @@
+libblas-dev:
+  ubuntu: libblas-dev
+liblapack-dev:
+  ubuntu: liblapack-dev
 libqt4-dev:
   ubuntu: libqt4-dev
 libqt4-opengl-dev:
