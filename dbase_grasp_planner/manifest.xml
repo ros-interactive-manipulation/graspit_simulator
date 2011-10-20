@@ -1,0 +1,16 @@
+<package>
+  <description brief="dbase_grasp_planner">
+
+     dbase_grasp_planner
+
+  </description>
+  <author>Matei Ciocarlie</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/dbase_grasp_planner</url>
+  <depend package="graspit"/>
+  <depend package="graspit_dbase_tasks"/>
+
+</package>
+
+
