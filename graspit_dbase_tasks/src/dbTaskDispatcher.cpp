@@ -78,7 +78,7 @@ int DBTaskDispatcher::connect(std::string host, int port, std::string username,
 int DBTaskDispatcher::init(int argc, char **argv)
 {
   //in the future, we'll get the connection params from arguments
-  return connect("wgs36",5432,"willow","willow","household_objects");
+  return connect("10.0.0.81",5432,"willow","willow","household_objects");
 }
 
 /*! Gets a new task from the database and starts it. Possible outcomes:
