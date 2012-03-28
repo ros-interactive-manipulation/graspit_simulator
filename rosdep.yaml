@@ -8,5 +8,7 @@ libqt4-opengl-dev:
   ubuntu: libqt4-opengl-dev
 libqt4-sql-psql:
   ubuntu: libqt4-sql-psql
-libcoin40-dev:
-  ubuntu: libcoin40-dev
+libcoin60-dev:
+  ubuntu: libcoin60-dev
+libsoqt4-dev:
+  ubuntu: libsoqt4-dev
