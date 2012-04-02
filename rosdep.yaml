@@ -12,3 +12,5 @@ libcoin60-dev:
   ubuntu: libcoin60-dev
 libsoqt4-dev:
   ubuntu: libsoqt4-dev
+libqhull-dev:
+  ubuntu: libqhull-dev
