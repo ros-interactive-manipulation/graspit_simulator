@@ -26,6 +26,7 @@
 #ifndef _DB_TASK_DISPATCHER_H_
 #define _DB_TASK_DISPATCHER_H_
 
+#include <vector>
 #include <string>
 #include <map>
 
@@ -92,6 +93,9 @@ class DBTaskDispatcher : public Plugin
   //! Max number of tasks to be completed. -1 means no max limit
   int mMaxTasks;
 
+  //! A list of accepted task types. Empty if all task types are accepted. 
+  std::vector<std::string> mAcceptedTaskTypes;
+
   //! Connects to the database. Returns 0 on success
   int connect(std::string host, int port, std::string username, 
               std::string password, std::string database);
@@ -113,6 +117,7 @@ public:
   void registerTaskCreator(std::string task_name, DBTaskCreator* creator)
   {
     mTaskCreators[task_name] = creator;
+    mAcceptedTaskTypes.push_back(task_name);
   }
 
   //! Main operation loop, called periodically

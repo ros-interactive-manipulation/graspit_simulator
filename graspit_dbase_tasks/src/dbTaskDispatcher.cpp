@@ -98,7 +98,7 @@ void DBTaskDispatcher::startNewTask()
     return;
   }
   db_planner::TaskRecord rec;
-  if (!mDBMgr->AcquireNextTask(&rec)) {
+  if (!mDBMgr->AcquireNextTask(&rec, mAcceptedTaskTypes)) {
     DBGA("Dispatcher: error reading next task");
     mStatus = ERROR;
     return;
