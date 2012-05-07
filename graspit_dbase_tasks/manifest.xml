@@ -8,6 +8,8 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/graspit_dbase_tasks</url>
+
+  <rosdep name="libqt4-dev"/>
   <depend package="graspit"/>
 
   <export>

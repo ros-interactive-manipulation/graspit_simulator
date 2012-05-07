@@ -29,4 +29,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 
+find_package(Qt4 COMPONENTS QtCore QtGui QtOpenGL REQUIRED)
+include(${QT_USE_FILE})
+
+add_definitions(-DQT_NO_KEYWORDS)
+
 rosbuild_add_library(graspit_dbase_tasks src/dbTaskDispatcher.cpp)
