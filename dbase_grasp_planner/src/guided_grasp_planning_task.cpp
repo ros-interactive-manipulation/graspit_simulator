@@ -79,13 +79,13 @@ void GuidedGraspPlanningTask::start()
   //check if the currently selected hand is the same as the one we need
   //if not, load the hand we need
   if (world->getCurrentHand() && world->getCurrentHand()->getDBName() == QString(mPlanningTask.handName.c_str())) {
-    DBGA("Grasp Planning Task: using currently loaded hand");
+    DBGA("Guided Grasp Planning Task: using currently loaded hand");
     mHand = world->getCurrentHand();
   } else {
     if(world->getCurrentHand()) world->removeRobot(world->getCurrentHand());
     QString handPath = mDBMgr->getHandGraspitPath(QString(mPlanningTask.handName.c_str()));
     handPath = QString(getenv("GRASPIT")) + handPath;
-    DBGA("Grasp Planning Task: loading hand from " << handPath.latin1());	      
+    DBGA("Guided Grasp Planning Task: loading hand from " << handPath.latin1());	      
     mHand = static_cast<Hand*>(world->importRobot(handPath));
     if ( !mHand ) {
       DBGA("Failed to load hand");
