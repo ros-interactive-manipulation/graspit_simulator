@@ -13,12 +13,14 @@ DEPENDPATH += src include include/dbase_grasp_planner
 
 HEADERS += include/dbase_grasp_planner/grasp_clustering_task.h \
            include/dbase_grasp_planner/grasp_planning_task.h \
-           include/dbase_grasp_planner/guided_grasp_planning_task.h
+           include/dbase_grasp_planner/guided_grasp_planning_task.h \
+           include/dbase_grasp_planner/lcg_grasp_planning_task.h
 
 SOURCES += src/dbase_planner_plugin.cpp \
            src/grasp_clustering_task.cpp \
            src/grasp_planning_task.cpp \
-           src/guided_grasp_planning_task.cpp
+           src/guided_grasp_planning_task.cpp \
+           src/lcg_grasp_planning_task.cpp
 
 GRASPIT_CFLAGS = $$system(rospack export --lang=cpp --attrib=cflags graspit)
 QMAKE_CXXFLAGS += $$GRASPIT_CFLAGS

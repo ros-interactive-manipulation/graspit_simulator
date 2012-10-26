@@ -54,7 +54,7 @@ namespace dbase_grasp_planner {
  */
 class GraspPlanningTask : public QObject, public graspit_dbase_tasks::DBTask {
   Q_OBJECT
- private:
+ protected:
   //! The object we are planning on
   GraspableBody *mObject;
   //! The planner that we are using
@@ -69,17 +69,18 @@ class GraspPlanningTask : public QObject, public graspit_dbase_tasks::DBTask {
   //! Saves a solution grasp to the database
   bool saveGrasp(const GraspPlanningState *pre_gps, const GraspPlanningState *final_gps);
   
+  //! Computes a pre-grasp for the given grasp
   bool computePreGrasp(const GraspPlanningState *final_gps, GraspPlanningState **pre_gps);
   
-  bool setPreGrasp(const GraspPlanningState *graspState);
-
+  //! Sets the hand in the pre-grasp pose given the grasp
+  virtual bool setPreGrasp(const GraspPlanningState *graspState);
 public:
   //! Just a stub for now
   GraspPlanningTask(graspit_dbase_tasks::DBTaskDispatcher *disp, 
                     db_planner::DatabaseManager *mgr, 
                     db_planner::TaskRecord rec);
   //! Removes the object that has been used from the sim world, but not the hand
-  ~GraspPlanningTask();
+  virtual ~GraspPlanningTask();
   //! Loads the hand and the object, initializes and starts a loop planner
   virtual void start();
 public slots:

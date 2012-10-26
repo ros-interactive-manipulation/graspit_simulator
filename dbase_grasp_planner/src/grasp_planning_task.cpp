@@ -110,7 +110,7 @@ void GraspPlanningTask::start()
   mObject = model->getGraspableBody();
   mObject->addToIvc();
   world->addBody(mObject);
-  
+
   //initialize the planner
   GraspPlanningState seed(mHand);
   seed.setObject(mObject);
@@ -126,6 +126,7 @@ void GraspPlanningTask::start()
   mPlanner->setEnergyType(ENERGY_CONTACT);
   mPlanner->setContactType(CONTACT_PRESET);
   mPlanner->setMaxSteps(65000);
+  static_cast<LoopPlanner*>(mPlanner)->setSaveThreshold(10.0);
   mPlanner->setRepeat(true);
   //max time set from database record
   if (mPlanningTask.taskTime >= 0){
@@ -229,36 +230,26 @@ bool GraspPlanningTask::computePreGrasp(const GraspPlanningState *final_gps,
 
 bool GraspPlanningTask::setPreGrasp(const GraspPlanningState *graspState)
 {
-  //place the mHand in position
-  graspState->execute();  
-
-  //the entire range of motion for the pr2_gripper_2010
-  //also, positive change means open gripper for pr2_gripper
-  double OPEN_BY = 0.323;
   //go back 10cm 
   double RETREAT_BY = -100;
 
-  //open fingers
-  std::vector<double> dof(mHand->getNumDOF(),0.0);
-  std::vector<double> stepSize(mHand->getNumDOF(), 0.0);
-  mHand->getDOFVals(&dof[0]);
-  for (int d=0; d<mHand->getNumDOF(); d++) {
-    dof[d] += OPEN_BY;
-    if (dof[d] < mHand->getDOF(d)->getMin()) {
-      dof[d] = mHand->getDOF(d)->getMin();
-    }
-    if (dof[d] > mHand->getDOF(d)->getMax()) {
-      dof[d] = mHand->getDOF(d)->getMax();
-    }
-    stepSize[d] = M_PI/36.0;
-  }
-  mHand->moveDOFToContacts(&dof[0], &stepSize[0], true, false);
+  //place the mHand in position
+  graspState->execute();  
 
-  //check if move has succeeded
+  mHand->autoGrasp(false, -1.0);
+  //check if all DOF's are at the min or max of their respective range of travel
+  //recall that we are opening, i.e. going against the default velocity
   for (int d=0; d<mHand->getNumDOF(); d++) {
-    if ( fabs( dof[d] - mHand->getDOF(d)->getVal() ) > 1.0e-5) {
-      DBGP("  trying to open to " << dof[d] << "; only made it to " << mHand->getDOF(d)->getVal());
-      DBGA("  open gripper fails");
+    if (mHand->getDOF(d)->getDefaultVelocity() > 0 && 
+        fabs( mHand->getDOF(d)->getVal() - mHand->getDOF(d)->getMin() ) > 1.0e-5 )
+    {
+      DBGP("  dof " << d << " not at min");
+      return false;
+    }
+    else if (mHand->getDOF(d)->getDefaultVelocity() < 0 && 
+             fabs( mHand->getDOF(d)->getVal() - mHand->getDOF(d)->getMax() ) > 1.0e-5 )
+    {
+      DBGP("  dof " << d << " not at max");
       return false;
     }
   }
@@ -289,6 +280,7 @@ bool GraspPlanningTask::saveGrasp(const GraspPlanningState *pre_gps,
   grasp->SetVolumeQuality(final_gps->getVolume());
   grasp->SetEnergy(final_gps->getEnergy());
   grasp->SetClearance(0.0);
+  grasp->SetTableClearance(0.0);
   grasp->SetClusterRep(false);
   grasp->SetCompliantCopy(false);
   grasp->SetSource("EIGENGRASPS");

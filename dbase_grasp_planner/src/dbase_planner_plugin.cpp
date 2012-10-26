@@ -37,6 +37,7 @@
 #include "dbase_grasp_planner/grasp_planning_task.h"
 #include "dbase_grasp_planner/guided_grasp_planning_task.h"
 #include "dbase_grasp_planner/grasp_clustering_task.h"
+#include "dbase_grasp_planner/lcg_grasp_planning_task.h"
 
 class GraspPlanningTaskCreator : public graspit_dbase_tasks::DBTaskCreator
 {
@@ -71,6 +72,17 @@ public:
   }
 };
 
+class LCGGraspPlanningTaskCreator : public graspit_dbase_tasks::DBTaskCreator
+{
+public:
+  virtual graspit_dbase_tasks::DBTask* operator()(graspit_dbase_tasks::DBTaskDispatcher *disp, 
+                                                  db_planner::DatabaseManager *mgr, 
+                                                  db_planner::TaskRecord rec)
+  {
+    return new dbase_grasp_planner::LCGGraspPlanningTask(disp, mgr, rec);
+  }
+};
+
 extern "C" Plugin* createPlugin() {
   graspit_dbase_tasks::DBTaskDispatcher* dispatcher = new graspit_dbase_tasks::DBTaskDispatcher;
 
@@ -82,6 +94,9 @@ extern "C" Plugin* createPlugin() {
 
   GraspClusteringTaskCreator *clustering_creator = new GraspClusteringTaskCreator;
   dispatcher->registerTaskCreator("GRASP_CLUSTERING", clustering_creator);
+
+  LCGGraspPlanningTaskCreator *lcg_creator = new LCGGraspPlanningTaskCreator;
+  dispatcher->registerTaskCreator("LCG_GRASP_PLANNING", lcg_creator);
 
   return dispatcher;
 }
