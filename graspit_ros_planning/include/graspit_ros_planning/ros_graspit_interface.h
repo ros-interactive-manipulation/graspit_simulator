@@ -65,6 +65,15 @@ class GraspableBody;
 namespace graspit_ros_planning
 {
 
+//! Main class, combining a ROS node with a GraspIt! interface
+/*! Note that this class inherits from GraspIt's Plugin class and implements the necessary functions to serve
+  as a GraspIt plugin. See include/plugin.h in the GraspIt code for the base class.
+
+  Provides a number of ROS services that directly operate on the GraspIt world, such as loading objects or
+  obstacles, simulating 3D scans of objects, etc.
+
+  In particular, note that this class uses the mainLoop() function to perform the ROS even management calls.
+*/
 class RosGraspitInterface : public Plugin
 {
 private:
@@ -102,8 +111,6 @@ private:
 
   //! Server for the grasp collision checking service
   ros::ServiceServer verify_grasp_srv_;
-
-
 
   //! Publisher for simulated scans
   ros::Publisher scan_publisher_;

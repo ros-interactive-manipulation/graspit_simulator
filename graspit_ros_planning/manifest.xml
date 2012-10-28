@@ -1,7 +1,12 @@
 <package>
   <description brief="graspit_ros_planning">
 
-     graspit_ros_planning
+    ROS interface to GraspIt! exposing a number of services such as
+    loading objects or obstacles into the GraspIt! world, or performing
+    graspl planning or testing for the PR2 gripper. Originally
+    developped to serve the needs of the probabilistic_grasp_planner
+    node and project; can serve as an example of how to use GraspIt!
+    from within ROS.
 
   </description>
   <author>Matei Ciocarlie</author>

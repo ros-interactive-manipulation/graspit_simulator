@@ -53,6 +53,8 @@
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/point_cloud_conversion.h>
 
+//------------------------- Convenience functions -------------------------------
+
 template<typename T>
   inline T mean(const std::vector<T> &input)
   {
@@ -169,6 +171,8 @@ RosGraspitInterface::~RosGraspitInterface()
   delete priv_nh_;
   delete db_mgr_;
 }
+
+//------------------------- Main class  -------------------------------
 
 int RosGraspitInterface::init(int argc, char **argv)
 {
