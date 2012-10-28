@@ -32,7 +32,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-#include "graspit_interface/ros_graspit_interface.h"
+#include "graspit_ros_planning/ros_graspit_interface.h"
 
 #include <boost/foreach.hpp>
 #include <cmath>
@@ -80,7 +80,7 @@ template<typename T>
     return std::sqrt(total_err);
   }
 
-namespace graspit_interface
+namespace graspit_ros_planning
 {
 
 transf poseToTransf(const geometry_msgs::Pose &pose)
@@ -280,8 +280,8 @@ bool RosGraspitInterface::loadGripper()
   return true;
 }
 
-bool RosGraspitInterface::loadModelCB(graspit_interface_msgs::LoadDatabaseModel::Request &request,
-                                      graspit_interface_msgs::LoadDatabaseModel::Response &response)
+bool RosGraspitInterface::loadModelCB(graspit_ros_planning_msgs::LoadDatabaseModel::Request &request,
+                                      graspit_ros_planning_msgs::LoadDatabaseModel::Response &response)
 {
   //retrieve model from database, if not already retrieved
   GraspitDBModel *model = getModel(request.model_id);
@@ -336,8 +336,8 @@ bool RosGraspitInterface::loadModelCB(graspit_interface_msgs::LoadDatabaseModel:
   return true;
 }
 
-bool RosGraspitInterface::clearBodiesCB(graspit_interface_msgs::ClearBodies::Request &request,
-                                        graspit_interface_msgs::ClearBodies::Response &response)
+bool RosGraspitInterface::clearBodiesCB(graspit_ros_planning_msgs::ClearBodies::Request &request,
+                                        graspit_ros_planning_msgs::ClearBodies::Response &response)
 {
   World *world = graspItGUI->getIVmgr()->getWorld();
   if (request.which_bodies == request.GRASPABLE_BODIES || request.which_bodies == request.ALL_BODIES)
@@ -373,8 +373,8 @@ bool RosGraspitInterface::clearBodiesCB(graspit_interface_msgs::ClearBodies::Req
   return true;
 }
 
-bool RosGraspitInterface::loadObstacleCB(graspit_interface_msgs::LoadObstacle::Request &request,
-                                         graspit_interface_msgs::LoadObstacle::Response &response)
+bool RosGraspitInterface::loadObstacleCB(graspit_ros_planning_msgs::LoadObstacle::Request &request,
+                                         graspit_ros_planning_msgs::LoadObstacle::Response &response)
 {
   std::string filename = getenv("GRASPIT") + std::string("/") + request.file_name;
   World *world = graspItGUI->getIVmgr()->getWorld();
@@ -392,8 +392,8 @@ bool RosGraspitInterface::loadObstacleCB(graspit_interface_msgs::LoadObstacle::R
   return true;
 }
 
-bool RosGraspitInterface::simulateScanCB(graspit_interface_msgs::SimulateScan::Request &request,
-                                         graspit_interface_msgs::SimulateScan::Response &response)
+bool RosGraspitInterface::simulateScanCB(graspit_ros_planning_msgs::SimulateScan::Request &request,
+                                         graspit_ros_planning_msgs::SimulateScan::Response &response)
 {
   ScanSimulator scan_sim;
   scan_sim.setType(ScanSimulator::SCANNER_COORDINATES);
@@ -475,7 +475,7 @@ bool RosGraspitInterface::simulateScanCB(graspit_interface_msgs::SimulateScan::R
 }
 
 void RosGraspitInterface::gripperCollisionCheck(const Body *object,
-                                                graspit_interface_msgs::TestGrasp::Response &response)
+                                                graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   response.hand_environment_collision = false;
   response.hand_object_collision = false;
@@ -504,7 +504,7 @@ void RosGraspitInterface::gripperCollisionCheck(const Body *object,
   }
 }
 
-void RosGraspitInterface::computeEnergy(Body *object, graspit_interface_msgs::TestGrasp::Response &response)
+void RosGraspitInterface::computeEnergy(Body *object, graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   SearchEnergy energy_calculator;
   energy_calculator.setType(ENERGY_CONTACT);
@@ -528,16 +528,16 @@ void RosGraspitInterface::computeEnergy(Body *object, graspit_interface_msgs::Te
     response.test_result = response.GRASP_FAILURE;
 }
 
-bool RosGraspitInterface::verifyGraspCB(graspit_interface_msgs::VerifyGrasp::Request &request,
-                                        graspit_interface_msgs::VerifyGrasp::Response &response)
+bool RosGraspitInterface::verifyGraspCB(graspit_ros_planning_msgs::VerifyGrasp::Request &request,
+                                        graspit_ros_planning_msgs::VerifyGrasp::Response &response)
 {
   response.hand_environment_collision = false;
   response.hand_object_collision = false;
 
   //  static int last_object_id = 0;
 
-  graspit_interface_msgs::LoadDatabaseModel::Request req_load_object;
-  graspit_interface_msgs::LoadDatabaseModel::Response res_load_object;
+  graspit_ros_planning_msgs::LoadDatabaseModel::Request req_load_object;
+  graspit_ros_planning_msgs::LoadDatabaseModel::Response res_load_object;
 
   World *world_p = graspItGUI->getIVmgr()->getWorld();
   GraspableBody *object = NULL;
@@ -552,9 +552,9 @@ bool RosGraspitInterface::verifyGraspCB(graspit_interface_msgs::VerifyGrasp::Req
 
   loadModelCB(req_load_object, res_load_object);
 
-  if (res_load_object.result == graspit_interface_msgs::LoadDatabaseModel::Response::LOAD_FAILURE)
+  if (res_load_object.result == graspit_ros_planning_msgs::LoadDatabaseModel::Response::LOAD_FAILURE)
   {
-    response.result = graspit_interface_msgs::VerifyGrasp::Response::LOAD_OBJECT_FAILURE;
+    response.result = graspit_ros_planning_msgs::VerifyGrasp::Response::LOAD_OBJECT_FAILURE;
     ROS_WARN_STREAM("Object load failed!");
     return true;
   }
@@ -581,19 +581,19 @@ bool RosGraspitInterface::verifyGraspCB(graspit_interface_msgs::VerifyGrasp::Req
     }
   }
 
-  graspit_interface_msgs::LoadObstacle::Request req_load_obstacle;
+  graspit_ros_planning_msgs::LoadObstacle::Request req_load_obstacle;
   req_load_obstacle.file_name = request.table_file_name;
   req_load_obstacle.obstacle_pose = geometry_msgs::Pose();
   req_load_obstacle.obstacle_pose.orientation.w = 1.0;
   if (obstacle == NULL)
   {
-    graspit_interface_msgs::LoadObstacle::Response res_load_obstacle;
+    graspit_ros_planning_msgs::LoadObstacle::Response res_load_obstacle;
 
     loadObstacleCB(req_load_obstacle, res_load_obstacle);
 
-    if (res_load_obstacle.result == graspit_interface_msgs::LoadObstacle::Response::LOAD_FAILURE)
+    if (res_load_obstacle.result == graspit_ros_planning_msgs::LoadObstacle::Response::LOAD_FAILURE)
     {
-      response.result = graspit_interface_msgs::VerifyGrasp::Response::LOAD_OBSTACLE_FAILURE;
+      response.result = graspit_ros_planning_msgs::VerifyGrasp::Response::LOAD_OBSTACLE_FAILURE;
       ROS_WARN_STREAM("Tabletop load failed!");
       return true;
     }
@@ -632,19 +632,19 @@ bool RosGraspitInterface::verifyGraspCB(graspit_interface_msgs::VerifyGrasp::Req
   // Load gripper to the scene
   if (!gripper_ && !loadGripper())
   {
-    response.result = graspit_interface_msgs::VerifyGrasp::Response::LOAD_GRIPPER_FAILURE;
+    response.result = graspit_ros_planning_msgs::VerifyGrasp::Response::LOAD_GRIPPER_FAILURE;
     ROS_WARN_STREAM("Gripper load failed!");
     return true;
   }
 
   // Result valid
-  response.result = graspit_interface_msgs::VerifyGrasp::Response::CHECK_SUCCESS;
+  response.result = graspit_ros_planning_msgs::VerifyGrasp::Response::CHECK_SUCCESS;
   //place the hand in the right pose
   gripper_->setTran(poseToTransf(request.grasp_pose));
   //set the gripper dof
   gripper_->forceDOFVal(0, request.grasp_joint_angle);
 
-  graspit_interface_msgs::TestGrasp::Response test_collision_response;
+  graspit_ros_planning_msgs::TestGrasp::Response test_collision_response;
 
   response.gripper_tabletop_clearance = world_p->getDist(gripper_, obstacle);
   response.gripper_object_distance = world_p->getDist(gripper_, object);
@@ -678,16 +678,16 @@ bool RosGraspitInterface::verifyGraspCB(graspit_interface_msgs::VerifyGrasp::Req
   return true;
 }
 
-bool RosGraspitInterface::generateGraspCB(graspit_interface_msgs::GenerateGrasp::Request &request,
-                                          graspit_interface_msgs::GenerateGrasp::Response &response)
+bool RosGraspitInterface::generateGraspCB(graspit_ros_planning_msgs::GenerateGrasp::Request &request,
+                                          graspit_ros_planning_msgs::GenerateGrasp::Response &response)
 {
   // The resulted grasp pose doesn't guarantee that the object will be reasonably close to the gripper. (Generating voxelgrid using this grasp pose might get a completedly free voxelgrid)
 
   response.result = response.GENERATE_FAILURE;
 
   // Load the requested object to graspit and clear other objects
-  graspit_interface_msgs::LoadDatabaseModel::Request req_load_object;
-  graspit_interface_msgs::LoadDatabaseModel::Response res_load_object;
+  graspit_ros_planning_msgs::LoadDatabaseModel::Request req_load_object;
+  graspit_ros_planning_msgs::LoadDatabaseModel::Response res_load_object;
 
   static int last_model_id = 0;
   static int acc_count = 1;
@@ -775,7 +775,7 @@ bool RosGraspitInterface::generateGraspCB(graspit_interface_msgs::GenerateGrasp:
 
   // Randomly generate grasp pose within the bounding space
   geometry_msgs::Pose grasp_random_pose;
-  graspit_interface_msgs::TestGrasp::Response test_grasp_res;
+  graspit_ros_planning_msgs::TestGrasp::Response test_grasp_res;
   std::vector<Body*> interest_list;
   interest_list.push_back(gripper_->getBase()); // palm
   interest_list.push_back(gripper_->getChain(0)->getLink(0)); //upper finger
@@ -802,17 +802,17 @@ bool RosGraspitInterface::generateGraspCB(graspit_interface_msgs::GenerateGrasp:
       }
     }
 
-    graspit_interface_msgs::LoadObstacle::Request req_load_obstacle;
+    graspit_ros_planning_msgs::LoadObstacle::Request req_load_obstacle;
     req_load_obstacle.file_name = request.tabletop_file_name;
     req_load_obstacle.obstacle_pose = geometry_msgs::Pose();
     req_load_obstacle.obstacle_pose.orientation.w = 1.0;
 
     if (obstacle == NULL)
     {
-      graspit_interface_msgs::LoadObstacle::Response res_load_obstacle;
+      graspit_ros_planning_msgs::LoadObstacle::Response res_load_obstacle;
       loadObstacleCB(req_load_obstacle, res_load_obstacle);
 
-      if (res_load_obstacle.result == graspit_interface_msgs::LoadObstacle::Response::LOAD_FAILURE)
+      if (res_load_obstacle.result == graspit_ros_planning_msgs::LoadObstacle::Response::LOAD_FAILURE)
       {
         response.result = response.GENERATE_FAILURE;
         ROS_WARN_STREAM("Tabletop load failed!");
@@ -877,7 +877,7 @@ bool RosGraspitInterface::generateGraspCB(graspit_interface_msgs::GenerateGrasp:
     if (request.request_tabletop)
     {
       gripper_tabletop_clearance = world->getDist(gripper_, obstacle);
-      graspit_interface_msgs::TestGrasp::Response test_collision_response;
+      graspit_ros_planning_msgs::TestGrasp::Response test_collision_response;
 
       gripperCollisionCheck(model->getGraspableBody(), test_collision_response);
 
@@ -967,7 +967,7 @@ bool RosGraspitInterface::generateGraspCB(graspit_interface_msgs::GenerateGrasp:
 }
 
 void RosGraspitInterface::testGraspDirect(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                                          graspit_interface_msgs::TestGrasp::Response &response)
+                                          graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   //place the hand in the right pose
   gripper_->setTran(poseToTransf(grasp.grasp_pose));
@@ -987,7 +987,7 @@ void RosGraspitInterface::testGraspDirect(const object_manipulation_msgs::Grasp 
 }
 
 void RosGraspitInterface::testGraspCompliant(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                                             graspit_interface_msgs::TestGrasp::Response &response)
+                                             graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   //place the hand in the right pose
   gripper_->setTran(poseToTransf(grasp.grasp_pose));
@@ -1008,7 +1008,7 @@ void RosGraspitInterface::testGraspCompliant(const object_manipulation_msgs::Gra
 }
 
 void RosGraspitInterface::testGraspReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                                            graspit_interface_msgs::TestGrasp::Response &response)
+                                            graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   // put hand in pre-grasp pose
   transf pre_grasp = poseToTransf(grasp.grasp_pose);
@@ -1035,7 +1035,7 @@ void RosGraspitInterface::testGraspReactive(const object_manipulation_msgs::Gras
 }
 
 void RosGraspitInterface::testGraspRobustReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                                                  graspit_interface_msgs::TestGrasp::Response &response)
+                                                  graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   // put hand in pre-grasp pose
   transf orig_pre_grasp = poseToTransf(grasp.grasp_pose);
@@ -1128,8 +1128,8 @@ void RosGraspitInterface::testGraspRobustReactive(const object_manipulation_msgs
   response.energy_value = m_energy + stddev_energy;
 }
 
-bool RosGraspitInterface::testGraspCB(graspit_interface_msgs::TestGrasp::Request &request,
-                                      graspit_interface_msgs::TestGrasp::Response &response)
+bool RosGraspitInterface::testGraspCB(graspit_ros_planning_msgs::TestGrasp::Request &request,
+                                      graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   response.test_performed = response.TEST_WAS_NOT_PERFORMED;
   //check if we have a gripper
@@ -1199,7 +1199,7 @@ bool RosGraspitInterface::graspPlanningCB(object_manipulation_msgs::GraspPlannin
     ROS_ERROR("For now, graspit will test grasps on-line, but not plan new grasps");
     return true;
   }
-  graspit_interface_msgs::LoadDatabaseModel load_srv;
+  graspit_ros_planning_msgs::LoadDatabaseModel load_srv;
   load_srv.request.model_id = request.target.potential_models[0].model_id;
   load_srv.request.clear_other_models = true;
   loadModelCB(load_srv.request, load_srv.response);
@@ -1222,7 +1222,7 @@ bool RosGraspitInterface::graspPlanningCB(object_manipulation_msgs::GraspPlannin
             return true;
           }
 
-          graspit_interface_msgs::TestGrasp test_srv;
+          graspit_ros_planning_msgs::TestGrasp test_srv;
           if (default_grasp_test_type_ == test_srv.request.DIRECT)
           {
             testGraspDirect(grasp, object, test_srv.response);

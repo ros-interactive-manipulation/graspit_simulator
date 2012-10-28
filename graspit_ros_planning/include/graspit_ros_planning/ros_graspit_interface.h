@@ -54,15 +54,15 @@ class GraspableBody;
 #include <object_manipulation_msgs/Grasp.h>
 #include <object_manipulation_msgs/GraspPlanning.h>
 
-#include "graspit_interface_msgs/LoadDatabaseModel.h"
-#include "graspit_interface_msgs/LoadObstacle.h"
-#include "graspit_interface_msgs/ClearBodies.h"
-#include "graspit_interface_msgs/SimulateScan.h"
-#include "graspit_interface_msgs/TestGrasp.h"
-#include "graspit_interface_msgs/GenerateGrasp.h"
-#include "graspit_interface_msgs/VerifyGrasp.h"
+#include "graspit_ros_planning_msgs/LoadDatabaseModel.h"
+#include "graspit_ros_planning_msgs/LoadObstacle.h"
+#include "graspit_ros_planning_msgs/ClearBodies.h"
+#include "graspit_ros_planning_msgs/SimulateScan.h"
+#include "graspit_ros_planning_msgs/TestGrasp.h"
+#include "graspit_ros_planning_msgs/GenerateGrasp.h"
+#include "graspit_ros_planning_msgs/VerifyGrasp.h"
 
-namespace graspit_interface
+namespace graspit_ros_planning
 {
 
 class RosGraspitInterface : public Plugin
@@ -114,7 +114,7 @@ private:
   //! A GraspIt instance of the PR2 gripper
   Pr2Gripper2010 *gripper_;
 
-  //! Used for general GrapsPlanning calls; should be a value from graspit_interface_msgs::TestGrasp
+  //! Used for general GrapsPlanning calls; should be a value from graspit_ros_planning_msgs::TestGrasp
   int default_grasp_test_type_;
 
   //! Used for converting energy values fo probabilities; soon to be replaced
@@ -131,62 +131,62 @@ private:
   // ------------------------- helper functions for grasp tests ---------------------------
 
   //! Checks collisions between the gripper and the environment
-  void gripperCollisionCheck(const Body *object, graspit_interface_msgs::TestGrasp::Response &response);
+  void gripperCollisionCheck(const Body *object, graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Performs the grasp test using the grasp energy function 
-  void computeEnergy(Body *object, graspit_interface_msgs::TestGrasp::Response &response);
+  void computeEnergy(Body *object, graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   // ---------------------------------- grasp tests ----------------------------------------
 
   //! Tests a grasp using the direct method
   void testGraspDirect(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                       graspit_interface_msgs::TestGrasp::Response &response);
+                       graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Tests a grasp using the compliant method
   void testGraspCompliant(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                          graspit_interface_msgs::TestGrasp::Response &response);
+                          graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Tests a grasp using the direct method
   void testGraspReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                         graspit_interface_msgs::TestGrasp::Response &response);
+                         graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Tests a grasp using the direct method
   void testGraspRobustReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
-                               graspit_interface_msgs::TestGrasp::Response &response);
+                               graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   // ---------------------------------- callbacks ----------------------------------------
 
   //! Callback for the load model service
-  bool loadModelCB(graspit_interface_msgs::LoadDatabaseModel::Request &request,
-                   graspit_interface_msgs::LoadDatabaseModel::Response &response);
+  bool loadModelCB(graspit_ros_planning_msgs::LoadDatabaseModel::Request &request,
+                   graspit_ros_planning_msgs::LoadDatabaseModel::Response &response);
 
   //! Callback for the load obstacle service
-  bool loadObstacleCB(graspit_interface_msgs::LoadObstacle::Request &request,
-                      graspit_interface_msgs::LoadObstacle::Response &response);
+  bool loadObstacleCB(graspit_ros_planning_msgs::LoadObstacle::Request &request,
+                      graspit_ros_planning_msgs::LoadObstacle::Response &response);
 
   //! Callback for the clear bodies service
-  bool clearBodiesCB(graspit_interface_msgs::ClearBodies::Request &request,
-                     graspit_interface_msgs::ClearBodies::Response &response);
+  bool clearBodiesCB(graspit_ros_planning_msgs::ClearBodies::Request &request,
+                     graspit_ros_planning_msgs::ClearBodies::Response &response);
 
   //! Callback for the clear bodies service
-  bool simulateScanCB(graspit_interface_msgs::SimulateScan::Request &request,
-                      graspit_interface_msgs::SimulateScan::Response &response);
+  bool simulateScanCB(graspit_ros_planning_msgs::SimulateScan::Request &request,
+                      graspit_ros_planning_msgs::SimulateScan::Response &response);
 
   //! Callback for the detailed, graspit-specific test grasp service
-  bool testGraspCB(graspit_interface_msgs::TestGrasp::Request &request,
-                   graspit_interface_msgs::TestGrasp::Response &response);
+  bool testGraspCB(graspit_ros_planning_msgs::TestGrasp::Request &request,
+                   graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Callback for the general grasp planning service
   bool graspPlanningCB(object_manipulation_msgs::GraspPlanning::Request &request,
                        object_manipulation_msgs::GraspPlanning::Response &response);
 
   //! Callback for the grasp generation service, for PR2 gripper
-  bool generateGraspCB(graspit_interface_msgs::GenerateGrasp::Request &request,
-                       graspit_interface_msgs::GenerateGrasp::Response &response);
+  bool generateGraspCB(graspit_ros_planning_msgs::GenerateGrasp::Request &request,
+                       graspit_ros_planning_msgs::GenerateGrasp::Response &response);
 
   //! Callback for the grasp verifying service, for PR2 gripper
-  bool verifyGraspCB(graspit_interface_msgs::VerifyGrasp::Request &request,
-                     graspit_interface_msgs::VerifyGrasp::Response &response);
+  bool verifyGraspCB(graspit_ros_planning_msgs::VerifyGrasp::Request &request,
+                     graspit_ros_planning_msgs::VerifyGrasp::Response &response);
 
 
 public:

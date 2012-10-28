@@ -32,10 +32,10 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-#include "graspit_interface/ros_graspit_interface.h"
+#include "graspit_ros_planning/ros_graspit_interface.h"
 
 extern "C" Plugin* createPlugin() {
-  return new graspit_interface::RosGraspitInterface();
+  return new graspit_ros_planning::RosGraspitInterface();
 }
 
 extern "C" std::string getType() {
