@@ -78,6 +78,8 @@ public:
 
     Note that if a DBTask itself finishes with an error, the Dispatcher will mark that in the
     database, then proceed to the next task.
+
+    The DBTaskDispatcher is a GraspIt! Plugin.
 */
 class DBTaskDispatcher : public Plugin
 {
