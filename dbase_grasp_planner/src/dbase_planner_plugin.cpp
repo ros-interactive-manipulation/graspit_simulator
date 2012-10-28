@@ -37,7 +37,7 @@
 #include "dbase_grasp_planner/grasp_planning_task.h"
 #include "dbase_grasp_planner/guided_grasp_planning_task.h"
 #include "dbase_grasp_planner/grasp_clustering_task.h"
-#include "dbase_grasp_planner/lcg_grasp_planning_task.h"
+#include "dbase_grasp_planner/velo_grasp_planning_task.h"
 
 class GraspPlanningTaskCreator : public graspit_dbase_tasks::DBTaskCreator
 {
@@ -61,6 +61,17 @@ public:
   }
 };
 
+class VeloGraspPlanningTaskCreator : public graspit_dbase_tasks::DBTaskCreator
+{
+public:
+  virtual graspit_dbase_tasks::DBTask* operator()(graspit_dbase_tasks::DBTaskDispatcher *disp, 
+                                                  db_planner::DatabaseManager *mgr, 
+                                                  db_planner::TaskRecord rec)
+  {
+    return new dbase_grasp_planner::VeloGraspPlanningTask(disp, mgr, rec);
+  }
+};
+
 class GraspClusteringTaskCreator : public graspit_dbase_tasks::DBTaskCreator
 {
 public:
@@ -72,17 +83,10 @@ public:
   }
 };
 
-class LCGGraspPlanningTaskCreator : public graspit_dbase_tasks::DBTaskCreator
-{
-public:
-  virtual graspit_dbase_tasks::DBTask* operator()(graspit_dbase_tasks::DBTaskDispatcher *disp, 
-                                                  db_planner::DatabaseManager *mgr, 
-                                                  db_planner::TaskRecord rec)
-  {
-    return new dbase_grasp_planner::LCGGraspPlanningTask(disp, mgr, rec);
-  }
-};
-
+/*! Creates and returns a DBTaskDispatcher, which is a GraspIt! Plugin. Before returning, it 
+  registers all known Task Creators with the Dispatcher, which will from that point on take care
+  of creating and assigning tasks appropriately based on the contents of the database.
+*/
 extern "C" Plugin* createPlugin() {
   graspit_dbase_tasks::DBTaskDispatcher* dispatcher = new graspit_dbase_tasks::DBTaskDispatcher;
 
@@ -92,11 +96,11 @@ extern "C" Plugin* createPlugin() {
   GuidedGraspPlanningTaskCreator *guided_creator = new GuidedGraspPlanningTaskCreator;
   dispatcher->registerTaskCreator("GUIDED_GRASP_PLANNING", guided_creator);
 
+  VeloGraspPlanningTaskCreator *velo_creator = new VeloGraspPlanningTaskCreator;
+  dispatcher->registerTaskCreator("VELO_GRASP_PLANNING", velo_creator);
+
   GraspClusteringTaskCreator *clustering_creator = new GraspClusteringTaskCreator;
   dispatcher->registerTaskCreator("GRASP_CLUSTERING", clustering_creator);
-
-  LCGGraspPlanningTaskCreator *lcg_creator = new LCGGraspPlanningTaskCreator;
-  dispatcher->registerTaskCreator("LCG_GRASP_PLANNING", lcg_creator);
 
   return dispatcher;
 }

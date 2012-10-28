@@ -1,7 +1,7 @@
 <package>
   <description brief="dbase_grasp_planner">
 
-     dbase_grasp_planner
+    Implementations of database-backed GraspIt! tasks for performing grasp planning.
 
   </description>
   <author>Matei Ciocarlie</author>

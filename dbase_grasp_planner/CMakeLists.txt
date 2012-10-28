@@ -32,9 +32,6 @@ include(${QT_USE_FILE})
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 
-#rosbuild_add_library(dbase_grasp_planning_plugin src/dbase_planner_plugin.cpp
-#                                                 src/grasp_planning_task.cpp)
-
 execute_process(COMMAND cmake -E chdir ${PROJECT_SOURCE_DIR} qmake dbase_grasp_planning.pro -o dbase_grasp_planning.make 
                 RESULT_VARIABLE _db_qmake_failed)
 if(_db_qmake_failed)

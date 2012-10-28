@@ -32,52 +32,34 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-#ifndef _GRASPCLUSTERINGTASK_H_
-#define _GRASPCLUSTERINGTASK_H_
+#ifndef _VELOGRASPPLANNINGTASK_H_
+#define _VELOGRASPPLANNINGTASK_H_
 
-#include <graspit_dbase_tasks/dbTask.h>
+#include <QObject>
 
-class GraspitDBGrasp;
+#include <dbase_grasp_planner/grasp_planning_task.h>
 
 namespace dbase_grasp_planner {
 
-//! Selects the representative grasps (i.e. cluster centers) from a list of grasps
-/*! This task is meant to be used *after* a grasp planning task has already been 
-  run for a given hand and object. It will then go through the list of existing grasps
-  and cluster them - i.e., for each set of grasps that are "close" in a Euclidian sense
-  it will select one to be marked as "cluster representative". The idea is that, 
-  when executing grasps, you do not want to try dozens of grasps that are within a 
-  few mm of each other, since if one will fail chances are all will fail. You can 
-  thus choose just the "cluster reps" and use those.
-  
-  Works by selecting the best grasp from a list, then setting it as the
-  representative grasp for all other grasps that are close to it. Then does this
-  iteratively on the remaining grasps.
-
-  Two grasps are deemed close based on the position and orientation of they define
-  plus the gripper angle.
-
-  Will set the "cluster_rep" property of ALL grasps in the list based on what it
-  thinks, i.e. mark it "true" for all those it thinks should be cluster reps and
-  "false" for all others. 
+//! A minor specialization of the GraspPlanningTask for the Velo gripper.
+/*! For now, the only change is in the way a pre-grasp is defined.   
  */
-class GraspClusteringTask : public graspit_dbase_tasks::DBTask {
+class VeloGraspPlanningTask : public GraspPlanningTask {
+  Q_OBJECT
  private:
-  //! The record of the actual planning task
-  db_planner::PlanningTaskRecord mPlanningTask;
+  
+  virtual bool setPreGrasp(const GraspPlanningState *graspState);
 
-  //! Returns true if two grasps are close enough to be clustered together
-  bool clusterGrasps(const GraspitDBGrasp *g1, const GraspitDBGrasp *g2);
- public:
-  //! Just a stub for now
-  GraspClusteringTask(graspit_dbase_tasks::DBTaskDispatcher *disp, 
-                      db_planner::DatabaseManager *mgr, 
-                      db_planner::TaskRecord rec);
+public:
+  //! Just a stub 
+  VeloGraspPlanningTask(graspit_dbase_tasks::DBTaskDispatcher *disp, 
+                        db_planner::DatabaseManager *mgr, 
+                        db_planner::TaskRecord rec);
 
-  //! Nothing to do here
-  ~GraspClusteringTask(){}
+  //! Just a stub
+  virtual ~VeloGraspPlanningTask() {}
 
-  //! Actually does all the work
+  //! Sets the appropriate save threshold for the planner
   virtual void start();
 };
 
