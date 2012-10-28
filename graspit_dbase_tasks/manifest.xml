@@ -1,7 +1,7 @@
 <package>
   <description brief="graspit_dbase_tasks">
 
-     Framework for batch processing using GraspIt and tasks stored in a database.
+     Framework for batch processing using GraspIt! and tasks stored in a database.
 
   </description>
   <author>Matei Ciocarlie</author>
