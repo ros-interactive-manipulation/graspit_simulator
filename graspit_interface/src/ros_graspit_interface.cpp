@@ -462,6 +462,7 @@ bool RosGraspitInterface::simulateScanCB(graspit_interface_msgs::SimulateScan::R
   point_cloud.header.frame_id = "graspit_scanner_frame";
   point_cloud.header.stamp = ros::Time::now();
   //convert to a PointCloud2
+  ROS_INFO("Converting scan to point cloud 2");
   sensor_msgs::convertPointCloudToPointCloud2(point_cloud, response.scan);
   response.scan.header.stamp = ros::Time::now();
 
@@ -469,6 +470,7 @@ bool RosGraspitInterface::simulateScanCB(graspit_interface_msgs::SimulateScan::R
   ROS_INFO("Publishing scan");
   scan_publisher_.publish(response.scan);
 
+  ROS_INFO("Done");
   return true;
 }
 
