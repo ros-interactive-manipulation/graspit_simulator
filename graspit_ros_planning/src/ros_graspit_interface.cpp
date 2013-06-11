@@ -91,6 +91,12 @@ transf poseToTransf(const geometry_msgs::Pose &pose)
                 vec3(1000 * pose.position.x, 1000 * pose.position.y, 1000 * pose.position.z));
 }
 
+transf poseStampedToTransf(const geometry_msgs::PoseStamped &pose)
+{
+  return transf(Quaternion(pose.pose.orientation.w, pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z),
+                vec3(1000 * pose.pose.position.x, 1000 * pose.pose.position.y, 1000 * pose.pose.position.z));
+}
+
 geometry_msgs::Pose transfToPose(const transf &tr)
 {
   geometry_msgs::Pose pose;
@@ -970,11 +976,11 @@ bool RosGraspitInterface::generateGraspCB(graspit_ros_planning_msgs::GenerateGra
 
 }
 
-void RosGraspitInterface::testGraspDirect(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+void RosGraspitInterface::testGraspDirect(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                                           graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   //place the hand in the right pose
-  gripper_->setTran(poseToTransf(grasp.grasp_pose));
+  gripper_->setTran(poseStampedToTransf(grasp.grasp_pose));
   //set the gripper dof (for the moment all the way open)
   gripper_->forceDOFVal(0, 0.523);//request.grasp.grasp_posture.position[0]);
   gripper_->autoGrasp(false, 0.5, true);
@@ -990,11 +996,11 @@ void RosGraspitInterface::testGraspDirect(const object_manipulation_msgs::Grasp 
   computeEnergy(object, response);
 }
 
-void RosGraspitInterface::testGraspCompliant(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+void RosGraspitInterface::testGraspCompliant(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                                              graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   //place the hand in the right pose
-  gripper_->setTran(poseToTransf(grasp.grasp_pose));
+  gripper_->setTran(poseStampedToTransf(grasp.grasp_pose));
   //set the gripper dof in the pre-grasp
   gripper_->forceDOFVal(0, grasp.pre_grasp_posture.position[0]);
   //check for collisions
@@ -1011,11 +1017,11 @@ void RosGraspitInterface::testGraspCompliant(const object_manipulation_msgs::Gra
   computeEnergy(object, response);
 }
 
-void RosGraspitInterface::testGraspReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+void RosGraspitInterface::testGraspReactive(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                                             graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   // put hand in pre-grasp pose
-  transf pre_grasp = poseToTransf(grasp.grasp_pose);
+  transf pre_grasp = poseStampedToTransf(grasp.grasp_pose);
   double moveDist = 100;
   pre_grasp = translate_transf(vec3(0, 0, -moveDist) * gripper_->getApproachTran()) * pre_grasp;
   gripper_->setTran(pre_grasp);
@@ -1038,11 +1044,11 @@ void RosGraspitInterface::testGraspReactive(const object_manipulation_msgs::Gras
   response.energy_value_list.push_back(response.energy_value);
 }
 
-void RosGraspitInterface::testGraspRobustReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+void RosGraspitInterface::testGraspRobustReactive(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                                                   graspit_ros_planning_msgs::TestGrasp::Response &response)
 {
   // put hand in pre-grasp pose
-  transf orig_pre_grasp = poseToTransf(grasp.grasp_pose);
+  transf orig_pre_grasp = poseStampedToTransf(grasp.grasp_pose);
   double moveDist = 100;
   const int n_tsteps = 3;
   //double t_steps[n_tsteps] = {-15,-10,-5,0,5,10,15};
@@ -1180,8 +1186,8 @@ bool RosGraspitInterface::testGraspCB(graspit_ros_planning_msgs::TestGrasp::Requ
   return true;
 }
 
-bool RosGraspitInterface::graspPlanningCB(object_manipulation_msgs::GraspPlanning::Request &request,
-                                          object_manipulation_msgs::GraspPlanning::Response &response)
+bool RosGraspitInterface::graspPlanningCB(manipulation_msgs::GraspPlanning::Request &request,
+                                          manipulation_msgs::GraspPlanning::Response &response)
 {
   response.error_code.value = response.error_code.OTHER_ERROR;
   if (!gripper_ && !loadGripper())
@@ -1217,7 +1223,7 @@ bool RosGraspitInterface::graspPlanningCB(object_manipulation_msgs::GraspPlannin
   //have to hardcode SUCCESS as graspit defines over it...
   response.error_code.value = 0;
 
-  BOOST_FOREACH(object_manipulation_msgs::Grasp grasp, request.grasps_to_evaluate)
+  BOOST_FOREACH(manipulation_msgs::Grasp grasp, request.grasps_to_evaluate)
         {
           if (grasp.grasp_posture.position.empty() || grasp.pre_grasp_posture.position.empty())
           {
@@ -1261,7 +1267,7 @@ bool RosGraspitInterface::graspPlanningCB(object_manipulation_msgs::GraspPlannin
             // Compute the mean and stddev of the values
           }
           probability = std::max(0.0, 1 - (test_srv.response.energy_value / default_energy_threshold_));
-          grasp.success_probability = probability;
+          grasp.grasp_quality = probability;
 
           response.grasps.push_back(grasp);
         }

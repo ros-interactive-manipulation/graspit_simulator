@@ -51,8 +51,8 @@ class GraspableBody;
 
 #include <ros/ros.h>
 
-#include <object_manipulation_msgs/Grasp.h>
-#include <object_manipulation_msgs/GraspPlanning.h>
+#include <manipulation_msgs/Grasp.h>
+#include <manipulation_msgs/GraspPlanning.h>
 
 #include "graspit_ros_planning_msgs/LoadDatabaseModel.h"
 #include "graspit_ros_planning_msgs/LoadObstacle.h"
@@ -146,19 +146,19 @@ private:
   // ---------------------------------- grasp tests ----------------------------------------
 
   //! Tests a grasp using the direct method
-  void testGraspDirect(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+  void testGraspDirect(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                        graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Tests a grasp using the compliant method
-  void testGraspCompliant(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+  void testGraspCompliant(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                           graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Tests a grasp using the direct method
-  void testGraspReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+  void testGraspReactive(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                          graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Tests a grasp using the direct method
-  void testGraspRobustReactive(const object_manipulation_msgs::Grasp &grasp, GraspableBody *object,
+  void testGraspRobustReactive(const manipulation_msgs::Grasp &grasp, GraspableBody *object,
                                graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   // ---------------------------------- callbacks ----------------------------------------
@@ -184,8 +184,8 @@ private:
                    graspit_ros_planning_msgs::TestGrasp::Response &response);
 
   //! Callback for the general grasp planning service
-  bool graspPlanningCB(object_manipulation_msgs::GraspPlanning::Request &request,
-                       object_manipulation_msgs::GraspPlanning::Response &response);
+  bool graspPlanningCB(manipulation_msgs::GraspPlanning::Request &request,
+                       manipulation_msgs::GraspPlanning::Response &response);
 
   //! Callback for the grasp generation service, for PR2 gripper
   bool generateGraspCB(graspit_ros_planning_msgs::GenerateGrasp::Request &request,
