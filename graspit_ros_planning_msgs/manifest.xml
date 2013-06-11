@@ -10,7 +10,7 @@
   <url>http://ros.org/wiki/graspit_ros_planning_msgs</url>
   <depend package="sensor_msgs"/>
   <depend package="geometry_msgs"/>
-  <depend package="object_manipulation_msgs"/>
+  <depend package="manipulation_msgs"/>
 </package>
 
 

@@ -3,7 +3,7 @@
 # in GraspIt's world. 
 
 # the grasp to be tested
-object_manipulation_msgs/Grasp grasp
+manipulation_msgs/Grasp grasp
 
 # how the test should be performed
 # test the requested pose with no change
