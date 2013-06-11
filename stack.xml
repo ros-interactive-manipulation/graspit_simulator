@@ -9,6 +9,7 @@
   <depend stack="household_objects_database_msgs" />
   <depend stack="household_objects_database" />
   <depend stack="ros" />
+  <depend stack="tf" />
   <depend stack="ros_comm" /> <!-- roscpp -->
 
 </stack>
