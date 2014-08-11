@@ -1,0 +1,40 @@
+# ROSBUILD dirs
+lib
+bin
+build
+msg_gen
+srv_gen
+
+# graspit specific / others
+*.make
+graspit_source
+patched
+graspit/rospack_nosubdirs
+logfile
+logfile-qhull
+graspit_ros_planning_msgs/src/
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
