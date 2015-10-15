@@ -1,5 +1,5 @@
 <launch>
-  <node name="graspit_ros" pkg="graspit" type="graspit" args="plugin:libros_graspit_interface" output="screen">
+  <node name="graspit_ros" pkg="graspit" type="graspit" args="plugin,libros_graspit_interface" output="screen">
     <env name="GRASPIT" value="$(find graspit)/graspit_source"/>
     <env name="GRASPIT_PLUGIN_DIR" value="$(find graspit_ros_planning)/lib"/>
   </node>
