@@ -1,0 +1,26 @@
+Index: graspit-lib-LINUX.pro
+===================================================================
+--- graspit-lib-LINUX.pro	(revision 31)
++++ graspit-lib-LINUX.pro	(working copy)
+@@ -21,7 +21,7 @@
+ LIBS	+= -lSoQt -lCoin
+ 
+ #add utility libraries
+-LIBS += -lGL -lpthread
++LIBS += -lGL -lpthread -ldl
+ 
+ MOC_DIR = .moc
+ OBJECTS_DIR = .obj
+Index: src/ivmgr.cpp
+===================================================================
+--- src/ivmgr.cpp	(revision 31)
++++ src/ivmgr.cpp	(working copy)
+@@ -1540,7 +1540,7 @@
+ #endif
+ 
+   int numtypes = myRenderer->getNumWriteFiletypes();
+-  SbList<SbName> extList;
++  SbPList extList;
+   SbString fullname;
+   SbString desc;
+   for (int i=0;i<numtypes;i++) {

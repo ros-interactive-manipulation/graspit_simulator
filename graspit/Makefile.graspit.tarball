@@ -7,7 +7,7 @@ INITIAL_DIR = build/Graspit
 SOURCE_DIR = graspit_source
 UNPACK_CMD = tar xzf
 MD5SUM_FILE = $(FILENAME).md5sum
-TARBALL_PATCH=graspit_project.patch graspit_dbase.patch
+TARBALL_PATCH=graspit_project.patch graspit_dbase.patch graspit_1404_svn.patch
 
 PACKAGE_DIR = $(shell rospack find graspit)
 
