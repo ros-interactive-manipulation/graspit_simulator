@@ -1,0 +1,20 @@
+all: bin/graspit
+
+GIT_DIR = graspit_source
+GIT_URL = https://github.com/mirsking/Graspit.git
+GIT_REVISION=master
+GIT_PATCH = graspit_project.patch graspit_dbase.patch graspit_1404_svn.patch
+
+PACKAGE_DIR = $(shell rospack find graspit)
+
+include $(shell rospack find mk)/git_checkout.mk
+
+bin/graspit: $(GIT_DIR)
+	cd $(GIT_DIR) && qmake "EXT_DESTDIR = $(PACKAGE_DIR)/bin" "ADDITIONAL_INCLUDE_DIR=$(PACKAGE_DIR)/include" "ADDITIONAL_LINK_FLAGS=-Wl,-rpath,$(PACKAGE_DIR)/lib " graspit.pro && make
+
+clean:
+	-rm -rf bin/graspit
+	-cd $(GIT_DIR) && make clean
+
+wipe: clean
+	-rm -rf $(GIT_DIR)
