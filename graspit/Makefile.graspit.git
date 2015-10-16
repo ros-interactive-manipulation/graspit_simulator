@@ -2,8 +2,8 @@ all: bin/graspit
 
 GIT_DIR = graspit_source
 GIT_URL = https://github.com/mirsking/Graspit.git
-GIT_REVISION=master
-GIT_PATCH = graspit_project.patch graspit_dbase.patch graspit_1404_svn.patch
+GIT_REVISION=zun-devel
+GIT_PATCH = graspit_git.patch
 
 PACKAGE_DIR = $(shell rospack find graspit)
 

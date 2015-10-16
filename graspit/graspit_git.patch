@@ -1,0 +1,69 @@
+diff --git a/graspit-lib-LINUX.pro b/graspit-lib-LINUX.pro
+index 3ae7f65..120878b 100644
+--- a/graspit-lib-LINUX.pro
++++ b/graspit-lib-LINUX.pro
+@@ -24,7 +24,7 @@ LIBS	+= -lqhull
+ LIBS	+= -lSoQt -lCoin
+ 
+ #add utility libraries
+-LIBS += -lGL -lpthread
++LIBS += -lGL -lpthread -ldl
+ 
+ MOC_DIR = .moc
+ OBJECTS_DIR = .obj
+diff --git a/graspit.pro b/graspit.pro
+index 017fe2f..e0603c5 100644
+--- a/graspit.pro
++++ b/graspit.pro
+@@ -21,9 +21,9 @@ COLLISION = graspit_collision
+ LAPACK = clapack
+ 
+ #build and use interface with Columbia Grasp Database
+-#CONFIG += cgdb
++CONFIG += cgdb
+ #and use the ros database manager
+-#CONFIG += graspit_ros
++CONFIG += graspit_ros
+ 
+ #link against Mosek QP solver (must be installed separately)
+ #CONFIG += mosek
+diff --git a/src/DBase/dbaseDlg.ui b/src/DBase/dbaseDlg.ui
+index 590dc29..3984317 100644
+--- a/src/DBase/dbaseDlg.ui
++++ b/src/DBase/dbaseDlg.ui
+@@ -34,7 +34,7 @@
+      </rect>
+     </property>
+     <property name="text" >
+-     <string>localhost</string>
++     <string>wgs36</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="hostLabel" >
+@@ -99,7 +99,7 @@
+      </rect>
+     </property>
+     <property name="text" >
+-     <string>grasps</string>
++     <string>household_objects</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="usernameLabel" >
+@@ -125,7 +125,7 @@
+      </rect>
+     </property>
+     <property name="text" >
+-     <string></string>
++     <string>willow</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="passwordLabel" >
+@@ -151,7 +151,7 @@
+      </rect>
+     </property>
+     <property name="text" >
+-     <string></string>
++     <string>willow</string>
+     </property>
+     <property name="echoMode" >
+      <enum>QLineEdit::Password</enum>
